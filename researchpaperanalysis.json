@@ -1,0 +1,119 @@
+{
+  "metadata": {
+    "title": "Attention Is All You Need",
+    "authors": [
+      "Ashish Vaswani",
+      "Noam Shazeer",
+      "Niki Parmar",
+      "Jakob Uszkoreit",
+      "Llion Jones",
+      "Aidan N. Gomez",
+      "Lukasz Kaiser",
+      "Illia Polosukhin"
+    ],
+    "publicationName": "Advances in Neural Information Processing Systems (NeurIPS 2017)",
+    "publicationYear": "2017",
+    "citationCount": "120,000+ citations",
+    "fieldCategory": "Natural Language Processing / Deep Learning",
+    "sourceStatus": "Verified from arXiv ID 1706.03762"
+  },
+  "coreConceptExtraction": {
+    "wordCount": 182,
+    "problemStatement": "Traditional sequence transduction models rely on recurrent neural networks (RNNs) or convolutions. RNNs process input sequentially word-by-word, creating an inherent computational bottleneck that prevents parallelization on modern hardware and struggles to retain long-distance contextual relationships.",
+    "mainMethodology": "The paper introduces the Transformer architecture, which completely eliminates recurrence and convolutions. Instead, it relies exclusively on self-attention mechanisms to directly model dependencies between all words in a sequence simultaneously, allowing massive parallel GPU processing.",
+    "keyMathematicalOrAlgorithmicContributions": [
+      "Scaled Dot-Product Attention: Attention(Q, K, V) = softmax((Q * K^T) / sqrt(d_k)) * V",
+      "Multi-Head Attention: Projecting queries, keys, and values into multiple subspaces to attend to information from different representation aspects simultaneously",
+      "Sinusoidal Positional Encoding: Adding fixed sine and cosine wave values to token embeddings to convey word order without sequential recurrence"
+    ],
+    "simplifiedOverview": "Before this paper, AI sequence models read sentences word-by-word like a person reading out loud, making training slow and memory-intensive. The Transformer revolutionized deep learning by processing whole sentences at once using Self-Attention. Think of self-attention as an automated highlighter that instantly connects related words regardless of distance—such as linking 'it' to 'animal' across a long paragraph. The core formula, Scaled Dot-Product Attention, computes similarity between queries (Q) and keys (K), scales the result to maintain stable gradients, applies softmax to get attention weights, and multiplies by values (V). Multi-Head Attention repeats this process across multiple representation spaces to capture diverse linguistic patterns concurrently. By replacing recurrent loops with attention and sinusoidal positional encodings, the Transformer achieved state-of-the-art translation quality while cutting training time drastically.",
+    "actualWordCount": 123
+  },
+  "architectureFlowchart": {
+    "mermaidCode": "flowchart TD; A[\"Raw Input Tokens\"] --> B[\"Token & Positional Embedding\"]; B --> C[\"Encoder: Multi-Head Attention\"]; C --> D[\"Encoder: Residual & LayerNorm\"]; D --> E[\"Encoder: Feed Forward Network\"]; E --> F[\"Encoder: Residual & LayerNorm\"]; F --> G[\"Decoder: Masked Multi-Head Attention\"]; G --> H[\"Decoder: Cross Multi-Head Attention\"]; H --> I[\"Decoder: Feed Forward Network\"]; I --> J[\"Linear Layer & Softmax\"]; J --> K[\"Target Output Probabilities\"]",
+    "flowchartExplanation": "The diagram illustrates the dual-stack Encoder-Decoder architecture of the Transformer. Input tokens are embedded and combined with positional encodings. The Encoder processes all tokens via multi-head self-attention and feed-forward sub-layers. The Decoder uses masked self-attention and cross-attention over encoder outputs to predict the next token probabilities.",
+    "breakdown": {
+      "inputData": "Raw text token sequences converted into vector space representation.",
+      "processingSteps": [
+        "Tokenization and word embedding vector lookup",
+        "Addition of sinusoidal positional encodings",
+        "Stacking through multi-head attention and position-wise feed-forward networks with residual connections"
+      ],
+      "modelArchitecture": "Encoder-Decoder structure utilizing exclusively self-attention and cross-attention blocks.",
+      "importantComponents": [
+        "Scaled Dot-Product Attention",
+        "Multi-Head Attention sub-blocks",
+        "Sinusoidal Positional Embeddings",
+        "Layer Normalization and Residual Connections"
+      ],
+      "finalOutput": "Probability distribution over vocabulary for target sequence token prediction."
+    }
+  },
+  "studentProjects": [
+    {
+      "projectTitle": "EdgeTransformer: Dynamic Head Pruning for Low-Latency Inference",
+      "improvementOrExtension": "Implement dynamic attention-head pruning and 8-bit quantization on a Transformer encoder to speed up inference on lightweight edge devices.",
+      "expectedPerformanceMetric": "Retain >= 92% of baseline translation accuracy/BLEU while reducing model parameter size by 40% and achieving 2x lower latency.",
+      "recommendedTechStack": [
+        "PyTorch",
+        "Hugging Face Transformers",
+        "ONNX Runtime",
+        "FastAPI"
+      ],
+      "difficultyLevel": "Intermediate",
+      "estimatedWeeks": 6,
+      "implementationTips": "Start with MarianMT or Small BERT, prune attention heads with lowest L1-norm contribution, and convert output models to ONNX runtime."
+    },
+    {
+      "projectTitle": "Domain-Adapted Lightweight Summarizer for Clinical Notes",
+      "improvementOrExtension": "Fine-tune a compact Transformer using Parameter-Efficient Fine-Tuning (LoRA) on medical/clinical texts to generate structured summaries.",
+      "expectedPerformanceMetric": "Achieve ROUGE-1 score >= 0.45 and ROUGE-L >= 0.40 on clinical dataset benchmarks with zero hallucinated lab numbers.",
+      "recommendedTechStack": [
+        "PyTorch",
+        "PEFT / LoRA",
+        "Hugging Face Datasets",
+        "Weights & Biases"
+      ],
+      "difficultyLevel": "Intermediate",
+      "estimatedWeeks": 8,
+      "implementationTips": "Utilize open-source clinical notes from MIMIC-III or PubMed summaries and apply adapter-based fine-tuning to prevent catastrophic forgetting."
+    },
+    {
+      "projectTitle": "Interactive Real-Time Attention Map Visualizer",
+      "improvementOrExtension": "Build a web application that extracts and renders multi-head attention weight matrices dynamically as users type sentences.",
+      "expectedPerformanceMetric": "Render real-time visual attention heatmaps with latency under 50ms for text inputs up to 256 tokens.",
+      "recommendedTechStack": [
+        "React",
+        "D3.js",
+        "Python",
+        "FastAPI",
+        "PyTorch"
+      ],
+      "difficultyLevel": "Introductory",
+      "estimatedWeeks": 6,
+      "implementationTips": "Hook into PyTorch attention weight outputs during model forward pass and stream matrix JSON data directly to D3 SVG heatmap components."
+    }
+  ],
+  "beginnerGlossary": [
+    {
+      "term": "Self-Attention",
+      "definition": "A mechanism allowing each token in a sequence to score and incorporate information from every other token in the same sequence.",
+      "analogy": "Like members in a group discussion glancing at everyone else in the room to understand context before speaking."
+    },
+    {
+      "term": "Positional Encoding",
+      "definition": "A technique of injecting numerical position signals into word vectors so the model understands token ordering without sequential processing.",
+      "analogy": "Like attaching seat numbers to event tickets so attendees know their exact order even if everyone enters the room simultaneously."
+    },
+    {
+      "term": "Multi-Head Attention",
+      "definition": "An architectural feature that runs several attention mechanisms in parallel across different vector representation subspaces.",
+      "analogy": "Like analyzing a document using three different colored highlighters at once—one for grammar, one for plot, and one for emotion."
+    },
+    {
+      "term": "Residual Connection",
+      "definition": "A skip-connection that adds a layer's unmodified input directly to its output to ensure gradients flow smoothly during backpropagation.",
+      "analogy": "Like taking an express elevator directly to the top floor while sending your luggage up the stairs so nothing gets lost along the way."
+    }
+  ]
+}
